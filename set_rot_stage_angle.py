@@ -48,7 +48,7 @@ def main():
         print('Stage is not homed')
         home_stage(ang_pos, position, motor)
 
-    new_position = 9
+    new_position = 120
     np = motor.get_device_unit_from_real_value(new_position, 'DISTANCE')
     motor.move_to_position(np)
     wait(1, motor)
