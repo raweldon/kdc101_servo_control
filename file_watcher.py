@@ -1,26 +1,23 @@
 import time
-from watchdog.observers import Observer
+from watchdog.observers.polling import PollingObserver
 from watchdog.events import FileSystemEventHandler
-
 
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         print'event type: {} path: {}'.format(event.event_type, event.src_path)
 
 if __name__ == '__main__':
-    event_handler = MyHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path='C:/Users/radians/daf_2019/kdc101_kinesis_codes/', recursive=False)
+    directory = '\\\\VBOXSVR/count_rate_analysis/'
 
-    cnt = 1
-    cnt1 = 1
+    event_handler = MyHandler()
+    observer = PollingObserver()
+    observer.schedule(event_handler, path=directory, recursive=False)
+    observer.start()
+
+    print 'watching for changes to ', directory
     try:
         while True:
             time.sleep(1)
-            cnt += 1
-            if cnt == cnt1*10:
-                cnt1 += 1
-                print 'no change'
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
